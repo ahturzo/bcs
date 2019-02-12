@@ -25,7 +25,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     <i class="fas fa-home"></i> {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -53,7 +53,7 @@
 
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-question-circle"></i> All Questions</a>
+                                <a class="nav-link" href="{{URL::to('allQuestions') }}"><i class="fas fa-question-circle"></i> All Questions</a>
                             </li>
                             @if(Auth::user()->role_id == 2)
                                 <li class="nav-item dropdown">
@@ -64,7 +64,7 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="#"><i class="fas fa-users"></i> All Users</a>
 
-                                        <a class="dropdown-item" href="#"><i class="fas fa-plus"></i> Add Questions</a>
+                                        <a class="dropdown-item" href="{{URL::to('addQuestions') }}"><i class="fas fa-plus"></i> Add Questions</a>
                                     </div>
                                 </li>
                             @endif
@@ -91,9 +91,13 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <div class="container">
+            <main class="py-4">
+                @include('partials.errors')
+                @include('partials.success')
+                @yield('content')
+            </main>
+        </div>
     </div>
 </body>
 </html>

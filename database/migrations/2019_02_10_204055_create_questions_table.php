@@ -21,10 +21,11 @@ class CreateQuestionsTable extends Migration
             $table->string('opt_C');
             $table->string('opt_D');
             $table->string('correct_opt');
+            $table->integer('catagory_id')->unsigned();
             $table->integer('user_id')->unsigned();
 
-
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('catagory_id')->references('id')->on('questioncatagories');
             $table->timestamps();
         });
     }
