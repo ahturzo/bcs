@@ -56,7 +56,10 @@
                                 <a class="nav-link" href="{{URL::to('allQuestions') }}"><i class="fas fa-question-circle"></i> All Questions</a>
                             </li>
                             @if(Auth::user()->role_id == 2)
-                                <li class="nav-item dropdown">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{URL::to('addQuestions') }}"><i class="fas fa-plus"></i> Add Questions</a>
+                                </li>
+                                {{-- <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         <i class="fas fa-user-cog"></i> Admin<span class="caret"></span>
                                     </a>
@@ -64,9 +67,9 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="#"><i class="fas fa-users"></i> All Users</a>
 
-                                        <a class="dropdown-item" href="{{URL::to('addQuestions') }}"><i class="fas fa-plus"></i> Add Questions</a>
+                                        
                                     </div>
-                                </li>
+                                </li> --}}
                             @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

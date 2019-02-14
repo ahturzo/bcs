@@ -44,17 +44,18 @@ class QuestionsController extends Controller
                 $data = Excel::load($path, function($reader){})->get();
                 if(!empty($data) && $data->count())
                 {
+                    $co = 1;
                     foreach($data as $data)
                     {
-                        //echo $data->question."->".$data->opt_a."->".$data->opt_b."->".$data->opt_c."->".$data->opt_d."->".$data->correct_opt."->".$data->category_id.'<br>';
+                        //echo $co++.". -> ".$data->question." -> ".$data->a." -> ".$data->b." -> ".$data->c." -> ".$data->d." -> ".$data->correct_answer." -> ".$request->input('catagory').'<br><br><br>';
 
                         $question = Question::create([
                                 'question' => $data->question,
-                                'opt_A' => $data->opt_a,
-                                'opt_B' => $data->opt_b,
-                                'opt_C' => $data->opt_c,
-                                'opt_D' => $data->opt_d,
-                                'correct_opt' => $data->correct_opt,
+                                'opt_A' => $data->a,
+                                'opt_B' => $data->b,
+                                'opt_C' => $data->c,
+                                'opt_D' => $data->d,
+                                'correct_opt' => $data->correct_answer,
                                 'catagory_id' => $request->input('catagory'),
                                 'user_id' => Auth::user()->id
                             ]);
@@ -70,39 +71,5 @@ class QuestionsController extends Controller
         {
             return back()->withInput()->with('error','Error Uploading file to the database.');
         }
-
-
-
-
-    	/*if(($handle =fopen($_FILES['file']['tmp_name'],"r")) !== FALSE)
-    	{
-    		fgetcsv($handle);
-
-    		//echo $data[2]."<br>";
-
-    		while(( $data =fgetcsv($handle,1000,",")) !== FALSE)
-    		{
-    			//echo $data[0]."->".$data[1]."->".$data[2].'<br>';
-    			$question = Question::create([
-                        'question' => $data[1],
-                        'opt_A' => $data[2],
-                        'opt_B' => $data[3],
-                        'opt_C' => $data[4],
-                        'opt_D' => $data[5],
-                        'correct_opt' => $data[6],
-                        'catagory_id' => $request->input('catagory'),
-                        'user_id' => Auth::user()->id
-            		]);
-    		}
-    		fclose($handle);
-    	}
-    	if($question)
-            {
-                return redirect()->route('home')->with('success','File data uploaded to the database Successfully');
-            }
-        else
-        {
-        	return back()->withInput()->with('error','Error Uploading file to the database.');
-        }*/
     }
 }
