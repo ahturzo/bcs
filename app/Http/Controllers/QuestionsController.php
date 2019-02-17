@@ -13,38 +13,31 @@ use File;
 
 class QuestionsController extends Controller
 {
-	public function allBCSQuestions(Request $request)
+	public function allBCSQuestions()
 	{
         $all = [];
         $catagoryName = [];
-        if( $request->input('catagory') != null)
+        $catagories = DB::table('questioncatagories')->get();
+            
+        if (request()->has('catagory')) 
         {
-            $catagoryID = $request->input('catagory');
-            $catagoryName = DB::table('questioncatagories')->where('id', '=', $catagoryID)->get();
-        }
+            $catagoryName = DB::table('questioncatagories')->where('id',request('catagory'))->get();
 
-        
-		if(Auth::check())
-        {
-            $catagories = DB::table('questioncatagories')->get();
-            if($request->input('catagory') == null)
-            {
-                return view('questions.all_question',compact(['catagoryName','catagories','all']));
-            }
-            else
-            {
-                $all = Question::where('catagory_id', '=', $catagoryID)->paginate(5);
-                return view('questions.all_question',compact(['catagoryName','catagories','all']));
-            }
+            $all = Question::where('catagory_id',request('catagory'))->paginate(20)
+                            ->appends('catagory',request('catagory'));
+                
+            return view('questions.all_question',compact(['catagories','all','catagoryName']));
         }
-        return view('auth.login');
+        else
+        {
+            return view('questions.all_question',compact(['catagories','catagoryName','all']));
+        }   
 	}
 
     public function addBCSquestion()
     {
         $questioncatagories = DB::table('questioncatagories')->get();
 
-        //echo count($questioncatagories);
     	return view('questions.add_question',['catagories' => $questioncatagories]);
     }
 
@@ -93,5 +86,13 @@ class QuestionsController extends Controller
         {
             return back()->withInput()->with('error','Error Uploading file to the database.');
         }
+    }
+
+    public function destroy($id)
+    {
+        $qus = Question::find($id);
+        $qus->delete();
+
+        return redirect()->route('home')->with('success','Data deleted Successfully.');
     }
 }

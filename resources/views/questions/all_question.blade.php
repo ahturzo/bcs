@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>BCS-All Questions</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 </head>
 <body>
 @extends('layouts.app')
@@ -9,7 +10,7 @@
 @section('content')
 <h2 class="text-center">All Question's of BCS Exam</h2><hr>
 
-<form class="jumbotron p-3 p-md-5 text-white rounded bg-dark" action="{{ url('/request_question')}}" method="post" enctype="multipart/form-data"> {{ csrf_field() }}
+<form class="jumbotron p-3 p-md-5 text-white rounded bg-dark" action="{{ url('/request_question')}}" method="get" enctype="multipart/form-data"> {{ csrf_field() }}
 
 	<div class="row">
 		<div class="col-lg-3 col-md-4 col-sm-5 col-6">
@@ -41,6 +42,8 @@
 	</div>
 </form>
 
+@yield('question')
+
 @if(count($catagoryName) != null)
 	<div class="jumbotron">
 		<div class="text-center">
@@ -63,7 +66,7 @@
 								<th scope="col">Option C</th>
 								<th scope="col">Option D</th>
 								<th scope="col">Correct Answer</th>
-								<th scope="col">Catagory</th>
+								<th scope="col">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -77,7 +80,12 @@
 									<td scope="row">{{$alll->opt_C}}</td>
 									<td scope="row">{{$alll->opt_D}}</td>
 									<td scope="row">{{$alll->correct_opt}}</td>
-									<td scope="row">{{$alll->catagory_id}}</td>
+									<td scope="row">
+										{{-- $alll->catagory_id --}}
+										<a href="#" class="edit"><i class="fas fa-edit"></i> </a>
+
+										<a href="#" data-toggle="modal" data-target="#delete" data-qid="{{ $alll->id }}"><i class="fas fa-trash-alt"></i></a>
+									</td>
 								</tr>
 							@endforeach
 						</tbody>
@@ -95,15 +103,56 @@
 
 @endif {{--this endif check name exist of not --}}
 
-
-		
-			
-
-
-
-
-
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Delete Modal -->
+<div class="modal modal-danger fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="text-center">
+	    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Question</h5><hr>
+      </div>
+
+      <form action="#" method="post" id="deleteform">
+      	{{ method_field('DELETE') }}
+      	{{ csrf_field() }}
+      	<div class="modal-body">
+	        <div class="text-center">
+	        	<p>Are you sure you want to delete this??</p>    
+	        </div>
+	    </div>
+
+	    <input type="hidden" name="_method" value="DELETE">
+
+	    <div class="text-center">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+	        <button type="submit" class="btn btn-warning">Yes</button>
+	   </div>
+	    
+      </form>
+  
+    </div>
+  </div>
+</div>  {{-- End delete modal --}}
+
 
 </body>
 </html>

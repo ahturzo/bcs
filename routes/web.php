@@ -22,8 +22,14 @@ Auth::routes();
 Route::middleware(['auth'])->group(function()
 {
 	Route::get('/home', 'HomeController@index')->name('home');
+
 	Route::get('addQuestions', 'QuestionsController@addBCSquestion');
+
 	Route::get('allQuestions', 'QuestionsController@allBCSQuestions');
+
 	Route::post('save_question', 'QuestionsController@uploadQuestion');
-	Route::post('request_question', 'QuestionsController@allBCSQuestions');
+	
+	Route::get('request_question', 'QuestionsController@allBCSQuestions');
+
+	Route::resource('/question','QuestionsController');
 });
