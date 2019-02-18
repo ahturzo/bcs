@@ -31,5 +31,5 @@ Route::middleware(['auth'])->group(function()
 	
 	Route::get('request_question', 'QuestionsController@allBCSQuestions');
 
-	Route::resource('/question','QuestionsController');
+	Route::resource('/question','QuestionsController'); //used for go to update and destroy function
 });

@@ -13,7 +13,7 @@ use File;
 
 class QuestionsController extends Controller
 {
-	public function allBCSQuestions()
+    public function allBCSQuestions()
 	{
         $all = [];
         $catagoryName = [];
@@ -80,19 +80,42 @@ class QuestionsController extends Controller
         }
         if($question)
         {
-            return redirect()->route('home')->with('success','File data uploaded to the database Successfully');
+            return redirect()->route('home')->with('success','<div class="text-center">File data uploaded Successfully</div>');
         }
         else
         {
-            return back()->withInput()->with('error','Error Uploading file to the database.');
+            return back()->withInput()->with('error','<div class="text-center">Error Uploading file to the database.</div>');
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $qus = Question::find($id);
+        $qus = Question::find($request->input('question_id'));
         $qus->delete();
+        return back()->withInput()->with('success','<div class="text-center">Question deleted Successfully.</div>');
+    }
 
-        return redirect()->route('home')->with('success','Data deleted Successfully.');
+    public function update(Request $request, $id)
+    {
+        //echo $request->input('question_id')."<br>".$request->input('question')."<br>".$request->input('opt_a')."<br>".$request->input('opt_b')."<br>".$request->input('opt_c')."<br>".$request->input('opt_d')."<br>".$request->input('correct_opt')."<br>";
+
+        $questionUpdate = Question::where('id',$request->input('question_id'))
+        ->update([
+                'question' => $request->input('question'),
+                'opt_A' => $request->input('opt_a'),
+                'opt_B' => $request->input('opt_b'),
+                'opt_C' => $request->input('opt_c'),
+                'opt_D' => $request->input('opt_d'),
+                'correct_opt' => $request->input('correct_opt')
+        ]);
+
+        if($questionUpdate)
+        {
+            return back()->withInput()->with('success','<div class="text-center">Question Updated Successfully.</div>');
+        }
+        else
+        {
+            return back()->withInput()->with('error','<div class="text-center">Error Updation Question.</div>');
+        }
     }
 }

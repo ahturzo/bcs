@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>BCS-All Questions</title>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 </head>
 <body>
 @extends('layouts.app')
@@ -66,26 +65,31 @@
 								<th scope="col">Option C</th>
 								<th scope="col">Option D</th>
 								<th scope="col">Correct Answer</th>
+							@if(Auth::user()->role_id == 2)
 								<th scope="col">Action</th>
+							@endif
 							</tr>
 						</thead>
 						<tbody>
 							<?php $sl_no = 1; ?>
 							@foreach($all as $alll)
-								<tr>
-									<td scope="row">{{ $sl_no++ }}</td>
-									<td scope="row">{{$alll->question}}</td>
-									<td scope="row">{{$alll->opt_A}}</td>
-									<td scope="row">{{$alll->opt_B}}</td>
-									<td scope="row">{{$alll->opt_C}}</td>
-									<td scope="row">{{$alll->opt_D}}</td>
-									<td scope="row">{{$alll->correct_opt}}</td>
+								<tr class="data-row">
+									<td scope="row">{{ $alll->id }}</td>
+									<td class="question">{{$alll->question}}</td>
+									<td class="opt_a">{{$alll->opt_A}}</td>
+									<td class="opt_b">{{$alll->opt_B}}</td>
+									<td class="opt_c">{{$alll->opt_C}}</td>
+									<td class="opt_d">{{$alll->opt_D}}</td>
+									<td class="correct_opt">{{$alll->correct_opt}}</td>
+								@if(Auth::user()->role_id == 2)
 									<td scope="row">
-										{{-- $alll->catagory_id --}}
-										<a href="#" class="edit"><i class="fas fa-edit"></i> </a>
+										<div class="row">
+											<button type="button" class="btn btn-info btn-sm" id="edit-item" data-item-id="{{ $alll->id }}"><i class="fas fa-edit"></i></button>
 
-										<a href="#" data-toggle="modal" data-target="#delete" data-qid="{{ $alll->id }}"><i class="fas fa-trash-alt"></i></a>
+											<button type="button" class="btn btn-danger btn-sm" id="delete-item" data-item-id="{{ $alll->id }}"><i class="fas fa-trash-alt"></i></button>
+										</div>
 									</td>
+								@endif
 								</tr>
 							@endforeach
 						</tbody>
@@ -105,54 +109,21 @@
 
 @endsection
 
+@include('layouts.editQuestionModal')
+@include('layouts.deleteQuestionModal')
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> --}}
 
+<script type="text/javascript" src="{{ asset('public/js/editQuestion.js') }}">
+	 // this js needed for edit question modal
+</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Delete Modal -->
-<div class="modal modal-danger fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-
-      <div class="text-center">
-	    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Question</h5><hr>
-      </div>
-
-      <form action="#" method="post" id="deleteform">
-      	{{ method_field('DELETE') }}
-      	{{ csrf_field() }}
-      	<div class="modal-body">
-	        <div class="text-center">
-	        	<p>Are you sure you want to delete this??</p>    
-	        </div>
-	    </div>
-
-	    <input type="hidden" name="_method" value="DELETE">
-
-	    <div class="text-center">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-	        <button type="submit" class="btn btn-warning">Yes</button>
-	   </div>
-	    
-      </form>
-  
-    </div>
-  </div>
-</div>  {{-- End delete modal --}}
-
+<script type="text/javascript" src="{{ asset('public/js/deleteQuestion.js') }}">
+	 // this js needed for delete question modal
+</script>
 
 </body>
 </html>
